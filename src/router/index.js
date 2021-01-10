@@ -1,8 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
+import VueSimpleMarkdown from 'vue-simple-markdown';
+Vue.use(VueSimpleMarkdown)
+
 import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import Reports from '../views/Reports.vue'
+import Register from '../views/Register.vue'
+import Login from '../views/Login.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +27,16 @@ Vue.use(VueRouter)
       path: '/reports/week/1',
       name: 'Kmom01',
       component: Reports
+  },
+  {
+      path: '/register',
+      name: 'Register',
+      component: Register
+  },
+  {
+      path: '/login',
+      name: 'Login',
+      component: Login
   },
   // {
   //   path: '/about',
