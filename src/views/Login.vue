@@ -13,6 +13,7 @@
 </div>
 </template>
 
+
 <script>
 import Nav from '@/components/Nav.vue'
 import { EventBus } from "@/modules/event-bus.js"
@@ -37,9 +38,8 @@ export default {
             })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
                 if(data.data.status === 200) {
-                    EventBus.$emit("jwt-token", { user:userInfo.email, token: data.data.token });
+                    EventBus.$emit("jwt", { user:userInfo.email, token: data.data.token });
                     this.message = data.data.title
                 }
 
@@ -51,7 +51,7 @@ export default {
             .catch((e) => {
                 console.log(e)
             });
-        }
+        },
     },
     data() {
         return {
@@ -59,6 +59,9 @@ export default {
             password: "",
             message: "",
         }
+    },
+    mounted() {
+
     }
 }
 </script>

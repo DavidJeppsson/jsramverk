@@ -2,6 +2,7 @@
 <div class="reports">
     <Nav />
     <h1>Reports</h1>
+    <!-- borde ev lägga in naven i ifsatsen så att den döljs -->
     <nav class="report-nav">
         <ul>
             <li v-for="n in num_array" v-bind:key="n" v-on:click="getReport(n)">
@@ -10,16 +11,57 @@
         </ul>
     </nav>
 
-    <div class="content">
+    <div v-if ="view === 'read'" class="content">
+        <h3 v-if="text">Kmom 0{{ kmom }}</h3>
         <vue-simple-markdown :source="text"></vue-simple-markdown>
+        <button v-if="this.$root.$data.logged && exists" v-on:click="setEdit()">Edit</button>
+        <button v-if="this.$root.$data.logged && !exists" v-on:click="setAdd()">Add</button>
+    </div>
+    <p> {{ kmom }} </p>
+
+
+    <div class="add" v-if ="view === 'add'">
+        <h3>Add report for kmom 0{{ kmom }}</h3>
+
+        <form @submit.prevent="addReport">
+            <textarea
+                @change="setNewContent($event.target.value)"
+                rows="20"
+                cols="40"
+            />
+
+            <input type="submit" name="" value="Add">
+
+        </form>
+        <button type="button" name="button" v-on:click="setRead()">Back</button>
+
+        <!-- <button type="button" name="button" v-on:click="setRead()">Back</button>
+        <button type="button" name="button" v-on:click="addReport()">Add</button> -->
     </div>
 
+    <div class="edit" v-if ="view === 'edit'">
+        <h3>Edit report for kmom 0{{ kmom }}</h3>
+
+        <form @submit.prevent="editReport">
+            <textarea
+                @change="setNewContent($event.target.value)"
+                rows="20"
+                cols="40"
+                :value="text"
+            />
+
+            <input type="submit" name="" value="Save">
+
+        </form>
+        <button type="button" name="button" v-on:click="setRead()">Back</button>
+    </div>
 
 </div>
 </template>
 
 <script>
 import Nav from '@/components/Nav.vue'
+// import { EventBus } from "@/modules/event-bus.js"
 
 export default {
     name: 'Reports',
@@ -33,23 +75,71 @@ export default {
             .then(data => {
                 if(data.data.text) {
                     this.text = data.data.text
-                    this.kmom = week;
-                } else {
+                    this.kmom = week
+                    this.exists = true
+                } if(data.data.status === 404) {
                     this.text = "Content will be added."
+                    this.kmom = week
+                    this.exists = false
                 }
+            })
+            .catch((e) => {
+                console.log(e)
 
             })
-        }
+        },
+        setEdit() {
+            this.view = "edit";
+        },
+        setAdd() {
+            this.view = "add";
+        },
+        setRead() {
+            this.view = "read";
+        },
+        setNewContent(content) {
+            this.newContent = content;
+        },
+        addReport() {
+            const data = {
+                kmom: this.kmom,
+                content: this.newContent,
+            };
+            fetch("http://localhost:1337/reports", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-access-token": this.$root.$data.token
+                },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                this.text = this.newContent;
+                this.newContent = "";
+                this.exists = true;
+                this.setRead();
+            })
+        },
+        editReport() {
+            console.log("Report nr " + this.kmom + " has been edited")
+        },
     },
     data() {
         return {
+            view: "read",
+            newContent: "",
+            exists: false,
             text: "",
             kmom: "",
-            num_array: [1, 2 ,3 , 4, 5, 6]
+            num_array: [1, 2 ,3 , 4, 5, 6],
 
         }
+    },
+    mounted() {
+        this.getReport(1);
     }
-
 }
 </script>
 
@@ -64,6 +154,11 @@ a:link {
 
 a:visited {
     color: #A83D00;
+}
+
+a:active {
+    background-color: #2A9C9A;
+    color: white;
 }
 
 a.router-link-exact-active {

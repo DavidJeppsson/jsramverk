@@ -24,7 +24,7 @@ Vue.use(VueRouter)
       component: About
   },
   {
-      path: '/reports/week/1',
+      path: '/reports',
       name: 'Kmom01',
       component: Reports
   },

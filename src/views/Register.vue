@@ -37,13 +37,11 @@ export default {
             })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
                 if(data.data.status === 201) {
                     this.text = "User registered"
                 }
 
                 if(data.data.status === 500) {
-                    console.log(data)
                     this.text = "Registration failed"
                 }
             })

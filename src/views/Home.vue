@@ -28,7 +28,6 @@ export default {
             fetch("http://localhost:1337")
             .then(res => res.json())
             .then(data => {
-                console.log(data)
                 if (data.data.text) {
                     return this.text = data.data.text
                 }
