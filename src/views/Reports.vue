@@ -2,8 +2,7 @@
 <div class="reports">
     <Nav />
     <h1>Reports</h1>
-    <!-- borde ev lägga in naven i ifsatsen så att den döljs -->
-    <nav class="report-nav">
+    <nav v-if ="view === 'read'" class="report-nav">
         <ul>
             <li v-for="n in num_array" v-bind:key="n" v-on:click="getReport(n)">
                 <a href="#">kmom0{{ n }}</a>
@@ -17,7 +16,6 @@
         <button v-if="this.$root.$data.logged && exists" v-on:click="setEdit()">Edit</button>
         <button v-if="this.$root.$data.logged && !exists" v-on:click="setAdd()">Add</button>
     </div>
-    <p> {{ kmom }} </p>
 
 
     <div class="add" v-if ="view === 'add'">
@@ -123,7 +121,23 @@ export default {
             })
         },
         editReport() {
-            console.log("Report nr " + this.kmom + " has been edited")
+            const data = {
+                kmom: this.kmom,
+                content: this.newContent,
+            };
+            fetch("http://localhost:1337/reports", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-access-token": this.$root.$data.token
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                this.text = this.newContent;
+                this.newContent = "";
+                this.setRead();
+            })
         },
     },
     data() {
