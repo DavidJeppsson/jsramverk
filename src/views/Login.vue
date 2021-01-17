@@ -7,7 +7,7 @@
         <input type="email" placeholder="test@test.se" name="email" v-model="email" required>
         <label for="password">Password</label>
         <input type="password" placeholder="Enter password" name="password" v-model="password" required>
-        <input type="submit" value="Logga in">
+        <input type="submit" class="button" value="Logga in">
     </form>
     <p> {{ message }}</p>
 </div>
@@ -77,5 +77,20 @@ a:visited {
 
 label, input {
     margin-right: .5em;
+}
+
+.button {
+    color: white;
+    margin-bottom: 1.4em;
+    text-align: center;
+    padding: 0.4em 0.4em;
+    font-size: 0.8em;
+    background: #A83D00;
+    border: 1px solid #075755;
+    border-radius: 0.4em;
+
+}
+.button:hover {
+    background-color: #5C2200;
 }
 </style>

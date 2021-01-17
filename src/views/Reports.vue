@@ -13,8 +13,8 @@
     <div v-if ="view === 'read'" class="content">
         <h3 v-if="text">Kmom 0{{ kmom }}</h3>
         <vue-simple-markdown :source="text"></vue-simple-markdown>
-        <button v-if="this.$root.$data.logged && exists" v-on:click="setEdit()">Edit</button>
-        <button v-if="this.$root.$data.logged && !exists" v-on:click="setAdd()">Add</button>
+        <button v-if="this.$root.$data.logged && exists" v-on:click="setEdit()" class="button">Edit</button>
+        <button v-if="this.$root.$data.logged && !exists" v-on:click="setAdd()" class="button">Add</button>
     </div>
 
 
@@ -28,10 +28,10 @@
                 cols="40"
             />
 
-            <input type="submit" name="" value="Add">
+            <input type="submit" class="button" value="Add">
 
         </form>
-        <button type="button" name="button" v-on:click="setRead()">Back</button>
+        <button type="button" name="button" v-on:click="setRead()" class="button back">Back</button>
 
         <!-- <button type="button" name="button" v-on:click="setRead()">Back</button>
         <button type="button" name="button" v-on:click="addReport()">Add</button> -->
@@ -48,10 +48,10 @@
                 :value="text"
             />
 
-            <input type="submit" name="" value="Save">
+            <input type="submit" class="button" value="Save">
 
         </form>
-        <button type="button" name="button" v-on:click="setRead()">Back</button>
+        <button type="button" name="button" v-on:click="setRead()" class="button back">Back</button>
     </div>
 
 </div>
@@ -183,8 +183,24 @@ a:hover {
     color: #2A9C9A;
 }
 
- li {
+li {
     display: inline;
     margin-right: .5em;
+}
+
+.button {
+    color: white;
+    display: block;
+    width: 35%;
+    margin: 3em auto 0;
+    background: #A83D00;
+    padding: 0.6em 0;
+    font-size: 1.1em;
+    border: 1px solid #075755;
+    border-radius: 0.4em;
+}
+.button:hover {
+    background-color: #5C2200;
+
 }
 </style>
